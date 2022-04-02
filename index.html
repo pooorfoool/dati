@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="./题库.json"></script>
+    <style type="text/css">
+        
+        #content {
+            text-align: center;
+        }
+        .kw {
+            width: 90%;
+            font-size: large;
+            border-color: skyblue;
+            border-style: solid;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            
+        }
+        .result {
+            text-align: left;
+            font-size: large;
+            
+        }
+        li {
+            margin-top: 20px;
+        }
+        .tm{
+            font-size:medium;
+            margin-bottom: 5px;
+        }
+        .da{
+            margin-top: 5px;
+            color:green;
+        }
+    </style>
+    <title>十九大竞赛答题</title>
+</head>
+
+<body>
+    <div id="content">
+        <h1 >十九大竞赛答题</h1>
+        <input type="text" placeholder="输入题目关键词" v-model="keyword" class="kw">
+        <div class="result">
+            <ol >
+                <li v-for="result in results">
+                    <div class="tm">{{result['题目']}}</div>
+                    <div class="da">{{result['答案']}}</div>
+                </li>
+            </ol>
+        </div>
+
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#content",
+            data: {
+                test: "这是测试",
+                keyword: "",
+                questions: q,
+                results: []
+            },
+            watch: {
+                keyword: function (val) {
+                    this.keyword = val;
+                    this.results = []
+                    //关键词为空的时候清空结果
+                    if (val == "") return;
+                    //空格分割关键词
+                    patt=new RegExp(this.keyword.replace(/ /g,'.*'));
+
+                    console.log('searching');
+                    this.results = [];
+                    for (i in this.questions) {
+                        current = this.questions[i];
+                        //检测题目与关键词是否匹配
+                        if (patt.test(current['题目'])) {
+                            this.results.push(current);
+                        }
+                    }
+
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>
