@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
-    <script src="https://raw.githubusercontent.com/pooorfoool/dati/main/%E9%A2%98%E5%BA%93.json"></script>
+    <script src="./题库.json"></script>
     <style type="text/css">
-        
         #content {
             text-align: center;
         }
+
         .kw {
             width: 90%;
             font-size: large;
@@ -19,23 +19,27 @@
             border-style: solid;
             padding-top: 4px;
             padding-bottom: 4px;
-            
+
         }
+
         .result {
             text-align: left;
             font-size: large;
-            
+
         }
+
         li {
             margin-top: 20px;
         }
-        .tm{
-            font-size:medium;
+
+        .tm {
+            font-size: medium;
             margin-bottom: 5px;
         }
-        .da{
+
+        .da {
             margin-top: 5px;
-            color:green;
+            color: green;
         }
     </style>
     <title>十九大竞赛答题</title>
@@ -43,10 +47,10 @@
 
 <body>
     <div id="content">
-        <h1 >十九大竞赛答题--题库版本{{major}}</h1>
-        <input type="text" placeholder="输入题目关键词" v-model="keyword" class="kw">
+        <h1>十九大竞赛答题--题库版本{{major}}</h1>
+        <input type="text" placeholder="输入题目关键词" v-model="keyword" class="kw" @keyup.delete="clear">
         <div class="result">
-            <ol >
+            <ol>
                 <li v-for="result in results">
                     <div class="tm">{{result['题目']}}</div>
                     <div class="da">{{result['答案']}}</div>
@@ -64,6 +68,12 @@
                 questions: q["_default"],
                 results: []
             },
+            methods: {
+                clear: function () {
+                    this.keyword = "";
+                }
+            },
+
             watch: {
                 keyword: function (val) {
                     this.keyword = val;
@@ -71,7 +81,7 @@
                     //关键词为空的时候清空结果
                     if (val == "") return;
                     //空格分割关键词
-                    patt=new RegExp(this.keyword.replace(/ /g,'.*'));
+                    patt = new RegExp(this.keyword.replace(/ /g, '.*'));
 
                     console.log('searching');
                     this.results = [];
