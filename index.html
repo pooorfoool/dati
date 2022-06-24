@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
-    <script src="./题目.json"></script>
+    <script src="./多选.json"></script>
+    <script src="./单选.json"></script>
+    <script src="./判断.json"></script>
     <style type="text/css">
         #content {
             text-align: center;
@@ -42,18 +44,27 @@
             color: green;
         }
     </style>
-    <title>十九大竞赛答题</title>
+    <title>药品检查员</title>
 </head>
 
 <body>
     <div id="content">
-        <h1>十九大竞赛答题--题库版本{{major}}</h1>
+        <h1>药品检查员--题库{{majordan}}</h1>
+        <label ><input type="radio" v-model="qtype" value="单选" @change="cg">单选</label>
+        <label ><input type="radio" v-model="qtype" value="多选" @change="cg">多选</label>
+        <label ><input type="radio" v-model="qtype" value="判断" @change="cg">判断</label>
         <input type="text" placeholder="输入题目关键词" v-model="keyword" class="kw" @keyup.delete="clear">
         <div class="result">
             <ol>
                 <li v-for="result in results">
-                    <div class="tm">{{result['题目']}}</div>
-                    <div class="da">{{result['答案']}}</div>
+                    <div class="tm">{{result['题干']}}</div>
+                    
+                        <div class="da" v-for="a in result['答案']">
+                            {{a}}
+                        </div>
+                    
+                    
+                    
                 </li>
             </ol>
         </div>
@@ -65,12 +76,26 @@
             data: {
                 test: "这是测试",
                 keyword: "",
-                questions: q["_default"],
+                qtype:"单选",
+                qdan: qdan["_default"],
+                qduo:qduo["_default"],
+                qpd:qpd["_default"],
+                questions:qdan["_default"],
                 results: []
             },
             methods: {
                 clear: function () {
                     this.keyword = "";
+                },
+                cg:function(){
+                    if (this.qtype=="单选"){
+                        this.questions=this.qdan
+                    }else if (this.qtype=="多选"){
+                        this.questions=this.qduo
+                    }else{
+                        this.questions=this.qpd
+                    }
+                    this.keyword+=' '
                 }
             },
 
@@ -88,7 +113,7 @@
                     for (i in this.questions) {
                         current = this.questions[i];
                         //检测题目与关键词是否匹配
-                        if (patt.test(current['题目'])) {
+                        if (patt.test(current['题干'])) {
                             this.results.push(current);
                         }
                     }
